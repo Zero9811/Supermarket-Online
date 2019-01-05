@@ -16,7 +16,7 @@ import javax.persistence.Id;
  */
 public class CommodityInfo {
     @Id
-    private String id;
+    private long id;
     private String name;
     private String description;
     private int type;

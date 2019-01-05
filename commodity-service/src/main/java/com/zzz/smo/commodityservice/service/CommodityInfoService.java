@@ -15,7 +15,7 @@ public interface CommodityInfoService {
      * @return
      */
     List<CommodityInfo> findUpSpecialTypeList(int type);
-    CommodityInfo findById(String id);
-    void newCommodity(String id,String name,String description,int type,int status);
-    void changeStatus(String id,int status);
+    CommodityInfo findById(long id);
+    void newCommodity(String name,String description,int type,int status);
+    void changeStatus(long id,int status);
 }

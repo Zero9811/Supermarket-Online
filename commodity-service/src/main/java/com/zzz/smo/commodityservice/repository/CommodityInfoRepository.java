@@ -9,7 +9,7 @@ import java.util.List;
  * @Author: Sean
  * @Date: 2019/1/1 22:28
  */
-public interface CommodityInfoRepository extends JpaRepository<CommodityInfo,String> {
+public interface CommodityInfoRepository extends JpaRepository<CommodityInfo,Long> {
     /**
      * 查询在架的某一类商品的列表
      * @param type

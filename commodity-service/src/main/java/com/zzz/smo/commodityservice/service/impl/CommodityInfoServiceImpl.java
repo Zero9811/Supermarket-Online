@@ -4,6 +4,7 @@ import com.zzz.smo.commodityservice.entity.CommodityInfo;
 import com.zzz.smo.commodityservice.enums.CommodityStatusEnum;
 import com.zzz.smo.commodityservice.repository.CommodityInfoRepository;
 import com.zzz.smo.commodityservice.service.CommodityInfoService;
+import com.zzz.smo.commodityservice.util.CommodityIdWorkerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,14 +37,17 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
      * @return
      */
     @Override
-    public CommodityInfo findById(String id) {
+    public CommodityInfo findById(long id) {
         return commodityInfoRepository.findById(id).get();
     }
 
     @Override
-    public void newCommodity(String id, String name, String description, int type, int status) {
+    public void newCommodity(String name, String description, int type, int status) {
         CommodityInfo commodityInfo = new CommodityInfo();
-        commodityInfo.setId(id);
+
+        CommodityIdWorkerUtil idWorkerUtil = new CommodityIdWorkerUtil();
+        commodityInfo.setId(idWorkerUtil.idWorker(type));
+
         commodityInfo.setName(name);
         commodityInfo.setDescription(description);
         commodityInfo.setType(type);
@@ -53,7 +57,7 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
     }
 
     @Override
-    public void changeStatus(String id, int status) {
+    public void changeStatus(long id, int status) {
         CommodityInfo commodityInfo = commodityInfoRepository.findById(id).get();
         commodityInfo.setStatus(status);
         commodityInfoRepository.save(commodityInfo);

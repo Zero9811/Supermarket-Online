@@ -21,15 +21,15 @@ public class CommodityController {
     private CommodityInfoService commodityInfoService;
 
     @GetMapping("/one")
-    public ResultVO getOne(String id){
+    public ResultVO getOne(long id){
         CommodityInfo commodityInfo = commodityInfoService.findById(id);
         ResultVO resultVO = ResultVOUtil.success(commodityInfo);
         return resultVO;
     }
 
     @PostMapping("/one")
-    public ResultVO newOne(String id,String name,String description,int type,int status){
-        commodityInfoService.newCommodity(id,name,description,type,status);
+    public ResultVO newOne(String name,String description,int type,int status){
+        commodityInfoService.newCommodity(name,description,type,status);
         return ResultVOUtil.success(null);
     }
 
@@ -45,7 +45,7 @@ public class CommodityController {
     }
 
     @PutMapping("/status")
-    public ResultVO changeStatus(String id,int status){
+    public ResultVO changeStatus(long id,int status){
         commodityInfoService.changeStatus(id,status);
         return ResultVOUtil.success(null);
     }
