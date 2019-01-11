@@ -2,6 +2,7 @@ package com.zzz.smo.commodityservice.service;
 
 import com.zzz.smo.commodityservice.entity.CommodityInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ public interface CommodityInfoService {
      */
     List<CommodityInfo> findUpSpecialTypeList(int type);
     CommodityInfo findById(long id);
-    void newCommodity(String name,String description,int type,int status);
+    void newCommodity(String name, BigDecimal price, String description, int type, int status);
     void changeStatus(long id,int status);
+    List<CommodityInfo> findOrderList(List idList);
 }

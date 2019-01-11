@@ -7,6 +7,7 @@ import com.zzz.smo.commodityservice.util.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,16 +21,18 @@ public class CommodityController {
     @Autowired
     private CommodityInfoService commodityInfoService;
 
-    @GetMapping("/one")
+    //查询一件商品
+    @GetMapping("/commodity")
     public ResultVO getOne(long id){
         CommodityInfo commodityInfo = commodityInfoService.findById(id);
         ResultVO resultVO = ResultVOUtil.success(commodityInfo);
         return resultVO;
     }
 
-    @PostMapping("/one")
-    public ResultVO newOne(String name,String description,int type,int status){
-        commodityInfoService.newCommodity(name,description,type,status);
+    //新增一件商品
+    @PostMapping("/commodity")
+    public ResultVO newOne(String name, BigDecimal price, String description, int type, int status){
+        commodityInfoService.newCommodity(name,price,description,type,status);
         return ResultVOUtil.success(null);
     }
 
@@ -38,15 +41,21 @@ public class CommodityController {
      * @param type
      * @return
      */
-    @GetMapping("/type")
+    @GetMapping("/commodities/type")
     public ResultVO getByType(int type){
         List list = commodityInfoService.findUpSpecialTypeList(type);
         return ResultVOUtil.success(list);
     }
 
-    @PutMapping("/status")
+    //更新一件商品的信息
+    @PutMapping("/commodity/status")
     public ResultVO changeStatus(long id,int status){
         commodityInfoService.changeStatus(id,status);
         return ResultVOUtil.success(null);
+    }
+
+    @PostMapping("/orderList")
+    public List<CommodityInfo> findOrderList(@RequestBody List<Long> idList){
+        return commodityInfoService.findOrderList(idList);
     }
 }

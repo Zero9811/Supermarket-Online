@@ -17,4 +17,5 @@ public interface CommodityInfoRepository extends JpaRepository<CommodityInfo,Lon
      * @return
      */
     List<CommodityInfo> findByTypeAndStatus(int type,int status);
+    List<CommodityInfo> findByIdIn(List list);
 }

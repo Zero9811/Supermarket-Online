@@ -12,7 +12,7 @@ import java.util.List;
  * @Author: Sean
  * @Date: 2019/1/3 16:20
  */
-public interface StockRepository extends JpaRepository<Stock,Integer> {
-    Stock findByCommodityIdAndWarehouseId(String commodityId,int warehouseId);
-    List<Stock> findByCommodityId(String commodityId);
+public interface StockRepository extends JpaRepository<Stock,Long> {
+    Stock findByCommodityInfoIdAndWarehouseId(long commodityInfoId,long warehouseId);
+    List<Stock> findByCommodityInfoIdIn(List<Long> list);
 }

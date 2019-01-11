@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,13 +43,14 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
     }
 
     @Override
-    public void newCommodity(String name, String description, int type, int status) {
+    public void newCommodity(String name, BigDecimal price, String description, int type, int status) {
         CommodityInfo commodityInfo = new CommodityInfo();
 
         CommodityIdWorkerUtil idWorkerUtil = new CommodityIdWorkerUtil();
         commodityInfo.setId(idWorkerUtil.idWorker(type));
 
         commodityInfo.setName(name);
+        commodityInfo.setPrice(price);
         commodityInfo.setDescription(description);
         commodityInfo.setType(type);
         commodityInfo.setStatus(status);
@@ -62,5 +64,10 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
         commodityInfo.setStatus(status);
         commodityInfoRepository.save(commodityInfo);
         log.info("商品在架状态已改变，商品id "+commodityInfo.getId());
+    }
+
+    @Override
+    public List<CommodityInfo> findOrderList(List idList) {
+        return commodityInfoRepository.findByIdIn(idList);
     }
 }

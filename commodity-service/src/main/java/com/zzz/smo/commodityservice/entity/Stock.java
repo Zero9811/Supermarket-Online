@@ -12,13 +12,14 @@ import javax.persistence.Id;
 
 /**
  * 商品库存表
+ * 目前只有一个仓库，id与commodityId相同
  */
 @Data
 @Entity
 public class Stock {
     @Id
-    private int id;
-    private String commodityId;
+    private long id;
+    private long commodityInfoId;
     private int quantity;
-    private int warehouseId;
+    private long warehouseId;
 }

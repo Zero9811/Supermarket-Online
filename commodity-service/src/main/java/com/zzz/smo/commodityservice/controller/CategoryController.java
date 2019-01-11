@@ -19,12 +19,12 @@ import java.util.List;
  * @Date: 2019/1/1 21:09
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/commodity")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-    @GetMapping("/one")
+    @GetMapping("/category")
     public ResultVO specialCategory(int id){
         Category category = categoryService.findById(id).get();
         CategoryVO categoryVO = new CategoryVO();
@@ -33,7 +33,7 @@ public class CategoryController {
         return resultVO;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/categories")
     public ResultVO allCategories(){
         List<Category> categoryList = categoryService.findAll();
         ResultVO resultVO = ResultVOUtil.success(categoryList);

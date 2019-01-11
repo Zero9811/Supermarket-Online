@@ -6,9 +6,9 @@ package com.zzz.smo.commodityservice.util;
  * @Date: 2019/1/5 21:01
  */
 public class CommodityIdWorkerUtil {
-    private long timestamp = System.currentTimeMillis();
+    private static long timestamp = System.currentTimeMillis();
 
-    public long idWorker(int type){
+    public static long idWorker(int type){
         return timestamp + type;
     }
 }
