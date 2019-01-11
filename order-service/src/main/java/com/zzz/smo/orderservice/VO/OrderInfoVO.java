@@ -1,28 +1,22 @@
-package com.zzz.smo.orderservice.entity;
+package com.zzz.smo.orderservice.VO;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Sean
- * @Date: 2019/1/5 22:20
+ * @Date: 2019/1/6 14:02
  */
 @Data
-@Entity
-public class OrderInfo {
-    @Id
+public class OrderInfoVO {
     private long id;
     private String username;
-    private String name;
-    private String phone;
-    private String address;
     private BigDecimal totalAmount;
     private Date createDate;
     //订单状态
     private int status;
-
+    private List orderDetails;
 }

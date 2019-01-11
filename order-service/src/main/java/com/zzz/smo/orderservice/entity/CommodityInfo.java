@@ -5,24 +5,20 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @Author: Sean
- * @Date: 2019/1/5 22:20
+ * @Date: 2019/1/1 22:26
  */
 @Data
-@Entity
-public class OrderInfo {
-    @Id
+/**
+ * 商品信息表
+ */
+public class CommodityInfo {
     private long id;
-    private String username;
     private String name;
-    private String phone;
-    private String address;
-    private BigDecimal totalAmount;
-    private Date createDate;
-    //订单状态
+    private BigDecimal price;
+    private String description;
+    private int type;
     private int status;
-
 }

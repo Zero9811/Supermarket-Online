@@ -9,20 +9,17 @@ import java.util.Date;
 
 /**
  * @Author: Sean
- * @Date: 2019/1/5 22:20
+ * @Date: 2019/1/6 13:49
  */
 @Data
 @Entity
-public class OrderInfo {
+public class OrderDetail {
     @Id
     private long id;
-    private String username;
-    private String name;
-    private String phone;
-    private String address;
-    private BigDecimal totalAmount;
+    private long orderInfoId;
+    private long commodityInfoId;
+    //件数
+    private int nums;
+    private BigDecimal price;
     private Date createDate;
-    //订单状态
-    private int status;
-
 }
