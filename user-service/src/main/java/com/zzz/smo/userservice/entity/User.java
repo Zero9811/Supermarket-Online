@@ -16,12 +16,13 @@ public class User {
     @Id
     private String username;
     private String password;
-//    private String email;
-//    private String phone;
+    private String email;
+    private String phone;
     private String nickname;
-//    private int addressId;
-//    private int age;
-//    private String gender;
-//    private double height;
-//    private double weight;
+    //默认收货地址
+//    private long addressId;
+    private int age;
+    private String gender;
+    private double height;
+    private double weight;
 }

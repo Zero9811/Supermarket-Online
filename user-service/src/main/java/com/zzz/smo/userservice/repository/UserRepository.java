@@ -10,5 +10,5 @@ import java.util.List;
  * @Date: 2018/12/27 0:58
  */
 public interface UserRepository extends JpaRepository<User,String> {
-    public User findByUsername(String username);
+    User findByUsername(String username);
 }

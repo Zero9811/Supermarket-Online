@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: user-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+  redis:
+    host: 127.0.0.1
+    port: 6379
