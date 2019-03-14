@@ -6,8 +6,6 @@ spring:
       server:
         git:
           uri: https://github.com/Zero9811/Supermarket-Online-Config
-          username: 981197769@qq.com
-          password: sshbb94520
 eureka:
   client:
     service-url:
