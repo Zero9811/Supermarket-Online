@@ -1,7 +1,7 @@
 package com.zzz.smo.userservice.util;
 
 
-import com.zzz.smo.userservice.VO.ResultVO;
+import com.zzz.smo.userservice.vo.ResultVO;
 import com.zzz.smo.userservice.enums.ResultVOCodeEnum;
 
 /**

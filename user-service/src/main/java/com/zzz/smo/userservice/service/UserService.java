@@ -9,4 +9,5 @@ import com.zzz.smo.userservice.entity.User;
 public interface UserService {
     User findByUsername(String username);
     void save(User user);
+    String encryPassword(String password);
 }

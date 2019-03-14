@@ -3,6 +3,7 @@ package com.zzz.smo.userservice.service.impl;
 import com.zzz.smo.userservice.entity.User;
 import com.zzz.smo.userservice.repository.UserRepository;
 import com.zzz.smo.userservice.service.UserService;
+import com.zzz.smo.userservice.util.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public String encryPassword(String password) {
+        return HashUtil.encryPassword(password);
     }
 }

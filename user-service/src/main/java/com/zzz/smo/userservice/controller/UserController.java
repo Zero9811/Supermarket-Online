@@ -1,22 +1,23 @@
 package com.zzz.smo.userservice.controller;
 
-import com.zzz.smo.userservice.VO.ResultVO;
+import com.zzz.smo.userservice.form.UserForm;
+import com.zzz.smo.userservice.vo.ResultVO;
 import com.zzz.smo.userservice.constant.CookieConstant;
 import com.zzz.smo.userservice.constant.RedisConstant;
+import com.zzz.smo.userservice.converter.User2UserInfoOutput;
 import com.zzz.smo.userservice.entity.User;
-import com.zzz.smo.userservice.entity.UserInfoOutput;
-import com.zzz.smo.userservice.repository.UserRepository;
+import com.zzz.smo.userservice.dataobject.UserInfoOutput;
 import com.zzz.smo.userservice.service.UserService;
 import com.zzz.smo.userservice.util.CookieUtil;
 import com.zzz.smo.userservice.util.ResultVOUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -39,12 +40,21 @@ public class UserController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    //该删除
     @Autowired
-    private UserRepository userRepository;
-    @GetMapping("/u")
-    public String getA(){
-        return userRepository.findByUsername("22").toString();
+    private User2UserInfoOutput user2UserInfoOutput;
+
+    /**
+     * 通过用户名获取用户信息
+     * @param username
+     * @return
+     */
+    @ApiOperation(value = "获取用户信息",notes = "根据url的用户名获取用户详细信息")
+    @ApiImplicitParam(name = "username",value = "用户名",required = true,dataType = "String",paramType = "path")
+    @GetMapping("/{username}")
+    public ResultVO getA(@PathVariable(value = "username") String username){
+        User user = userService.findByUsername(username);
+        UserInfoOutput userInfoOutput = user2UserInfoOutput.convert(user);
+        return ResultVOUtil.success(userInfoOutput);
     }
 
     /**
@@ -73,8 +83,10 @@ public class UserController {
 
         //当用户未登录时
         User user = userService.findByUsername(username);
+        System.out.println(user.toString());
         if(user != null){
-            if(password.equals(user.getPassword())){
+            //加密比较
+            if(userService.encryPassword(password).equals(user.getPassword())){
                 String token = UUID.randomUUID().toString();
                 //存入Redis.包括key、value、最大过期时间，过期单位
                 stringRedisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_TEMPLATE,token),username,RedisConstant.EXPIRE, TimeUnit.SECONDS);
@@ -89,14 +101,46 @@ public class UserController {
         return ResultVOUtil.fail("登陆失败");
     }
 
+    /**
+     * 1.获取cookie
+     * 2.清除redis
+     * 3.清除cookie
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/logout")
     public ResultVO logout(HttpServletRequest request,HttpServletResponse response){
+
+        //获取cookie
+        Cookie cookie = CookieUtil.get(request,CookieConstant.TOKEN);
+
+        //清除Redis
+        stringRedisTemplate.delete(String.format(RedisConstant.TOKEN_TEMPLATE,cookie.getValue()));
+
         //清除cookie
-        Cookie cookie = CookieUtil.remove(request,CookieConstant.TOKEN);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setValue(null);
         response.addCookie(cookie);
+
         return ResultVOUtil.success("登出成功");
     }
 
+    /**
+     * 1.查询是否已注册
+     * 2.写入数据库
+     * @param username
+     * @param password
+     * @param email
+     * @return
+     */
+    @ApiOperation(value = "注册、创建用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password",value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "email",value = "邮箱",required = true,dataType = "String")
+    })
     @PostMapping("/register")
     public ResultVO register(String username,String password,String email){
 
@@ -108,9 +152,19 @@ public class UserController {
         //保存到数据库
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(userService.encryPassword(password));
         user.setEmail(email);
         userService.save(user);
         return ResultVOUtil.success("注册成功");
+    }
+
+    @ApiOperation(value = "更新用户信息")
+    @ApiImplicitParam(required = true)
+    @PutMapping
+    public ResultVO changeInfo(UserForm userForm){
+        User user = userService.findByUsername(userForm.getUsername());
+        BeanUtils.copyProperties(userForm,user);
+        userService.save(user);
+        return ResultVOUtil.success("更改信息成功");
     }
 }

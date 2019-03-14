@@ -1,4 +1,4 @@
-package com.zzz.smo.userservice.entity;
+package com.zzz.smo.userservice.dataobject;
 
 import lombok.Data;
 
@@ -8,7 +8,9 @@ import lombok.Data;
  */
 @Data
 public class UserInfoOutput {
+    private String username;
     private String nickname;
+    private String phone;
     private String gender;
     private int age;
     private double height;
