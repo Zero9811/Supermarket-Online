@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: order-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+feign:
+  hystrix:
+    enabled: true
