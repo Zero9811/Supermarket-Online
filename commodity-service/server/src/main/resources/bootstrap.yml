@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: commodity-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+#    stream:
+#      bindings:
+#        myMessage:
+#          group: order
+#          content-type: application/json
